@@ -23,7 +23,6 @@ public class KeyHandler implements KeyListener {
         int code = e.getKeyCode();
 
         // Title state
-
         if (gp.gameState == gp.titleState) {
 
             if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
