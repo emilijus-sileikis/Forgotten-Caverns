@@ -21,8 +21,8 @@ public class EventHandler {
             eventRect[col][row] = new EventRect();
             eventRect[col][row].x = 23;
             eventRect[col][row].y = 23;
-            eventRect[col][row].width = 96; //2
-            eventRect[col][row].height = 96; //2
+            eventRect[col][row].width = 40; //96
+            eventRect[col][row].height = 40; //96
             eventRect[col][row].eventRectDefaultX = eventRect[col][row].x;
             eventRect[col][row].eventRectDefaultY = eventRect[col][row].y;
 
