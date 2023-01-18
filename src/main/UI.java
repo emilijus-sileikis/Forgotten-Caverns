@@ -106,8 +106,8 @@ public class UI {
         g2.fillRect(0,0,gp.screenWidth, gp.screenHeight);
 
         // Title name
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 80F));
-        String text = "Game Name";
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 50F));
+        String text = "Forgotten Caverns";
         int x = getXforCenteredText(text);
         int y = gp.tileSize*3;
 
