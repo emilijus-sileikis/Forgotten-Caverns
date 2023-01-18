@@ -106,18 +106,21 @@ public class UI {
         g2.fillRect(0,0,gp.screenWidth, gp.screenHeight);
 
         // Title name
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 50F));
-        String text = "Forgotten Caverns";
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 70F));
+        String text = "Forgotten";
+        String text2 = "Caverns";
         int x = getXforCenteredText(text);
         int y = gp.tileSize*3;
 
         // Shadow effect for text
         g2.setColor(Color.BLACK);
-        g2.drawString(text, x+8, y+8);
+        g2.drawString(text, x+8, y-18);
+        g2.drawString(text2, x+60, y+60);
 
         // Title color
         g2.setColor(Color.WHITE);
-        g2.drawString(text, x, y);
+        g2.drawString(text, x, y-30);
+        g2.drawString(text2, x+50, y+50);
 
         // Logo
         x = gp.screenWidth/2 - (gp.tileSize*2)/2;
