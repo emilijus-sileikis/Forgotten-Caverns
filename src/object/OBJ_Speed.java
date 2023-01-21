@@ -9,6 +9,6 @@ public class OBJ_Speed extends Entity {
         super(gp);
 
         name = "Speed";
-        down1 = setup("/res/objects/speed");
+        down1 = setup("/res/objects/speed", gp.tileSize, gp.tileSize);
     }
 }

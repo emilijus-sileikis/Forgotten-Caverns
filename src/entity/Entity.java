@@ -26,6 +26,7 @@ public class Entity {
     int dialogueIndex = 0;
     public boolean collisionOn = false;
     public boolean invincible = false;
+    public boolean attacking = false;
 
     // Counter
     public int spriteCounter = 0;
@@ -168,14 +169,14 @@ public class Entity {
         }
     }
 
-    public BufferedImage setup (String imageName) {
+    public BufferedImage setup (String imageName, int width, int height) {
 
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
 
         try {
             image = ImageIO.read(getClass().getResourceAsStream(imageName + ".png"));
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            image = uTool.scaleImage(image, width, height);
         } catch (Exception e) {
             e.printStackTrace();
         }
