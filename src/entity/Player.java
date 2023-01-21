@@ -80,7 +80,7 @@ public class Player extends Entity {
         if (attacking) {
             attacking();
         }
-        else if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.enterPressed) {
+        else if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.enterPressed || keyH.spacePressed) {
 
             if (keyH.upPressed) { direction = "up"; }
             else if (keyH.downPressed) { direction = "down"; }
@@ -106,7 +106,7 @@ public class Player extends Entity {
             // Event
             gp.eHandler.checkEvent();
 
-            if (!collisionOn && !keyH.enterPressed) {
+            if (!collisionOn && !keyH.enterPressed && !keyH.spacePressed) {
 
                 switch (direction) {
                     case "up" -> worldY -= speed;
@@ -114,12 +114,10 @@ public class Player extends Entity {
                     case "left" -> worldX -= speed;
                     case "right" -> worldX += speed;
                 }
-
+                spriteCounter++;
             }
 
             gp.keyH.enterPressed = false;
-
-            spriteCounter++;
 
             if (spriteCounter > 15) {
                 if (spriteNum == 1) { spriteNum = 2; }
@@ -170,17 +168,16 @@ public class Player extends Entity {
 
         if (i != 999) {
 
-            if (gp.keyH.enterPressed || gp.keyH.spacePressed) {
+            if (gp.keyH.enterPressed) {
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
             }
         }
         else {
-            if (gp.keyH.enterPressed || gp.keyH.spacePressed) {
+            if (gp.keyH.enterPressed) {
                 attacking = true;
             }
         }
-        gp.keyH.spacePressed = false;
         gp.keyH.enterPressed = false;
     }
 
