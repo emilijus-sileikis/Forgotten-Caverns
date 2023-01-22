@@ -42,7 +42,7 @@ public class KeyHandler implements KeyListener {
         }
 
         // Play state
-        if (gp.gameState == gp.playState) {
+       else if (gp.gameState == gp.playState) {
 
             if(code == KeyEvent.VK_W || code == KeyEvent.VK_UP) { upPressed = true; }
             if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) { downPressed = true; }

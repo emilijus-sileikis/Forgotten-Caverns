@@ -31,6 +31,9 @@ public class Player extends Entity {
         solidArea.width = 32; //32
         solidArea.height = 32; //32
 
+        attackArea.width = 36;
+        attackArea.height = 36;
+
         setDefaultValues();
         getPlayerImage();
         getPlayerAttackImage();
@@ -154,6 +157,35 @@ public class Player extends Entity {
         }
         if (spriteCounter > 5 && spriteCounter <= 25) {
             spriteNum = 2;
+
+            // get current areas
+            int currentWorldX= worldX;
+            int currentWorldY = worldY;
+            int solidAreaWidth = solidArea.width;
+            int solidAreaHeight = solidArea.height;
+
+            // Adjust players area to attackArea
+            switch (direction) {
+                case "up": worldY -= attackArea.height; break;
+                case "down": worldY += attackArea.height; break;
+                case "left": worldX -= attackArea.width; break;
+                case "right": worldX += attackArea.width; break;
+            }
+
+            // assign attack area to solid
+            solidArea.width = attackArea.width;
+            solidArea.height = attackArea.height;
+
+            // check collision
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            damageMonster(monsterIndex);
+
+            // restore original data
+            worldX = currentWorldX;
+            worldY = currentWorldY;
+            solidArea.width = solidAreaWidth;
+            solidArea.height = solidAreaHeight;
+
         }
         if (spriteCounter > 25) {
             spriteNum = 1;
@@ -188,6 +220,22 @@ public class Player extends Entity {
             if (!invincible) {
                 health -= 1;
                 invincible = true;
+            }
+        }
+    }
+
+    public void damageMonster(int i) {
+
+        if (i != 999) {
+
+            if (!gp.monster[i].invincible) {
+
+                gp.monster[i].health -= 1;
+                gp.monster[i].invincible = true;
+
+                if (gp.monster[i].health <= 0) {
+                    gp.monster[i] = null;
+                }
             }
         }
     }
