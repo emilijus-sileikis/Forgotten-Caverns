@@ -10,7 +10,7 @@ public class OBJ_Gate extends Entity {
         super(gp);
 
         name = "Gate";
-        down1 = setup("/res/objects/gate");
+        down1 = setup("/res/objects/gate", gp.tileSize, gp.tileSize);
         collision = true;
     }
 }
