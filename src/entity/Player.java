@@ -166,10 +166,10 @@ public class Player extends Entity {
 
             // Adjust players area to attackArea
             switch (direction) {
-                case "up": worldY -= attackArea.height; break;
-                case "down": worldY += attackArea.height; break;
-                case "left": worldX -= attackArea.width; break;
-                case "right": worldX += attackArea.width; break;
+                case "up" -> worldY -= attackArea.height;
+                case "down" -> worldY += attackArea.height;
+                case "left" -> worldX -= attackArea.width;
+                case "right" -> worldX += attackArea.width;
             }
 
             // assign attack area to solid
