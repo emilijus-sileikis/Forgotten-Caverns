@@ -235,6 +235,7 @@ public class Player extends Entity {
                 gp.playSE(5);
                 gp.monster[i].health -= 1;
                 gp.monster[i].invincible = true;
+                gp.monster[i].damageReaction();
 
                 if (gp.monster[i].health <= 0) {
                     gp.monster[i].dying = true;
