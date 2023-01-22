@@ -21,8 +21,8 @@ public class EventHandler {
             eventRect[col][row] = new EventRect();
             eventRect[col][row].x = 23;
             eventRect[col][row].y = 23;
-            eventRect[col][row].width = 96; //2
-            eventRect[col][row].height = 96; //2
+            eventRect[col][row].width = 40; //96
+            eventRect[col][row].height = 40; //96
             eventRect[col][row].eventRectDefaultX = eventRect[col][row].x;
             eventRect[col][row].eventRectDefaultY = eventRect[col][row].y;
 
@@ -48,7 +48,7 @@ public class EventHandler {
 
             if (hit(26,16,"right")) { damageTraps(26,16, gp.dialogueState); }
             //if (hit(26,16, "right")) { teleportPad(gp.dialogueState); }
-            if (hit(23, 12, "up")) { healingLake(23,12, gp.dialogueState); }
+            if (hit(23, 12, "any")) { healingLake(23,12, gp.dialogueState); }
         }
 
     }
@@ -90,7 +90,7 @@ public class EventHandler {
 
     public void healingLake (int col, int row, int gameState) {
 
-        if (gp.keyH.enterPressed) {
+        if (gp.keyH.spacePressed) {
             gp.gameState = gameState;
             gp.ui.currentDialogue = "The magical water restored \nyour health!";
             gp.player.health = gp.player.maxHealth;

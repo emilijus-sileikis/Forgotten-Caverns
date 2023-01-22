@@ -24,15 +24,19 @@ public class Player extends Entity {
         screenY = gp.screenHeight/2 - (gp.tileSize/2);
 
         solidArea = new Rectangle();
-        solidArea.x = 8; //8
-        solidArea.y = 16; //16
+        solidArea.x = 32; //8
+        solidArea.y = 40; //16
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
         solidArea.width = 32; //32
         solidArea.height = 32; //32
 
+        attackArea.width = 36;
+        attackArea.height = 36;
+
         setDefaultValues();
         getPlayerImage();
+        getPlayerAttackImage();
     }
 
     public void setDefaultValues () {
@@ -49,28 +53,42 @@ public class Player extends Entity {
 
     public void getPlayerImage () {
 
-        up1 = setup("/res/player/boy_up_1");
-        up2 = setup("/res/player/boy_up_2");
-        up3 = setup("/res/player/boy_up_3");
-        down1 = setup("/res/player/boy_down_1");
-        down2 = setup("/res/player/boy_down_2");
-        down3 = setup("/res/player/boy_down_3");
-        left1 = setup("/res/player/boy_left_1");
-        left2 = setup("/res/player/boy_left_2");
-        left3 = setup("/res/player/boy_left_3");
-        right1 = setup("/res/player/boy_right_1");
-        right2 = setup("/res/player/boy_right_2");
-        right3 = setup("/res/player/boy_right_3");
+        up1 = setup("/res/player/boy_up_1", gp.tileSize*2, gp.tileSize*2);
+        up2 = setup("/res/player/boy_up_2", gp.tileSize*2, gp.tileSize*2);
+        up3 = setup("/res/player/boy_up_3", gp.tileSize*2, gp.tileSize*2);
+        down1 = setup("/res/player/boy_down_1", gp.tileSize*2, gp.tileSize*2);
+        down2 = setup("/res/player/boy_down_2", gp.tileSize*2, gp.tileSize*2);
+        down3 = setup("/res/player/boy_down_3", gp.tileSize*2, gp.tileSize*2);
+        left1 = setup("/res/player/boy_left_1", gp.tileSize*2, gp.tileSize*2);
+        left2 = setup("/res/player/boy_left_2", gp.tileSize*2, gp.tileSize*2);
+        left3 = setup("/res/player/boy_left_3", gp.tileSize*2, gp.tileSize*2);
+        right1 = setup("/res/player/boy_right_1", gp.tileSize*2, gp.tileSize*2);
+        right2 = setup("/res/player/boy_right_2", gp.tileSize*2, gp.tileSize*2);
+        right3 = setup("/res/player/boy_right_3", gp.tileSize*2, gp.tileSize*2);
+    }
+
+    public void getPlayerAttackImage() {
+        attUp1 = setup("/res/player/boy_attack_up_1", gp.tileSize*2, gp.tileSize*2);
+        attUp2 = setup("/res/player/boy_attack_up_2", gp.tileSize*2, gp.tileSize*2);
+        attDown1 = setup("/res/player/boy_attack_down_1", gp.tileSize*2, gp.tileSize*2);
+        attDown2 = setup("/res/player/boy_attack_down_2", gp.tileSize*2, gp.tileSize*2);
+        attLeft1 = setup("/res/player/boy_attack_left_1", gp.tileSize*2, gp.tileSize*2);
+        attLeft2 = setup("/res/player/boy_attack_left_2", gp.tileSize*2, gp.tileSize*2);
+        attRight1 = setup("/res/player/boy_attack_right_1", gp.tileSize*2, gp.tileSize*2);
+        attRight2 = setup("/res/player/boy_attack_right_2", gp.tileSize*2, gp.tileSize*2);
     }
 
     public void update () {
 
-        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
+        if (attacking) {
+            attacking();
+        }
+        else if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.enterPressed || keyH.spacePressed) {
 
             if (keyH.upPressed) { direction = "up"; }
             else if (keyH.downPressed) { direction = "down"; }
             else if (keyH.leftPressed) { direction = "left"; }
-            else { direction = "right"; }
+            else if (keyH.rightPressed) { direction = "right"; }
 
             // Check collision
             collisionOn = false;
@@ -91,9 +109,7 @@ public class Player extends Entity {
             // Event
             gp.eHandler.checkEvent();
 
-            gp.keyH.enterPressed = false;
-
-            if (!collisionOn) {
+            if (!collisionOn && !keyH.enterPressed && !keyH.spacePressed) {
 
                 switch (direction) {
                     case "up" -> worldY -= speed;
@@ -101,10 +117,10 @@ public class Player extends Entity {
                     case "left" -> worldX -= speed;
                     case "right" -> worldX += speed;
                 }
-
+                spriteCounter++;
             }
 
-            spriteCounter++;
+            gp.keyH.enterPressed = false;
 
             if (spriteCounter > 15) {
                 if (spriteNum == 1) { spriteNum = 2; }
@@ -132,55 +148,69 @@ public class Player extends Entity {
         }
     }
 
-    public void pickUpObject (int i) {
+    private void attacking() {
 
-        if (i != 999) {
+        spriteCounter++;
 
-//            String objectName = gp.obj[i].name;
-//
-//            switch (objectName) {
-//                case "Key":
-//                    gp.playSE(1);
-//                    hasKey++;
-//                    gp.obj[i] = null;
-//                    gp.ui.showMessage("You picked up a key!");
-//                    break;
-//                case "Gate":
-//                    if (hasKey > 0) {
-//                        gp.playSE(3);
-//                        gp.obj[i] = null;
-//                        hasKey--;
-//                        gp.ui.showMessage("You opened the gates!");
-//                    }
-//                    else {
-//                        gp.ui.showMessage("You need a key!");
-//                    }
-//                    break;
-//                case "Speed":
-//                    gp.playSE(2);
-//                    speed += 2;
-//                    gp.obj[i] = null;
-//                    gp.ui.showMessage("You drank a speed potion!");
-//                     break;
-//                case "Chest":
-//                    gp.ui.gameFinished = true;
-//                    gp.stopMusic();
-//                    gp.playSE(4);
-//                    break;
-//            }
+        if (spriteCounter <=5) {
+            spriteNum = 1;
+        }
+        if (spriteCounter > 5 && spriteCounter <= 25) {
+            spriteNum = 2;
+
+            // get current areas
+            int currentWorldX= worldX;
+            int currentWorldY = worldY;
+            int solidAreaWidth = solidArea.width;
+            int solidAreaHeight = solidArea.height;
+
+            // Adjust players area to attackArea
+            switch (direction) {
+                case "up" -> worldY -= attackArea.height;
+                case "down" -> worldY += attackArea.height;
+                case "left" -> worldX -= attackArea.width;
+                case "right" -> worldX += attackArea.width;
+            }
+
+            // assign attack area to solid
+            solidArea.width = attackArea.width;
+            solidArea.height = attackArea.height;
+
+            // check collision
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            damageMonster(monsterIndex);
+
+            // restore original data
+            worldX = currentWorldX;
+            worldY = currentWorldY;
+            solidArea.width = solidAreaWidth;
+            solidArea.height = solidAreaHeight;
+
+        }
+        if (spriteCounter > 25) {
+            spriteNum = 1;
+            spriteCounter = 0;
+            attacking = false;
         }
     }
+
+    public void pickUpObject (int i) {}
 
     public void interactNPC (int i) {
 
         if (i != 999) {
 
-            if (gp.keyH.enterPressed || gp.keyH.spacePressed) {
+            if (gp.keyH.enterPressed) {
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
             }
         }
-        gp.keyH.spacePressed = false;
+        else {
+            if (gp.keyH.enterPressed) {
+                attacking = true;
+            }
+        }
+        gp.keyH.enterPressed = false;
     }
 
     public void contactMonster(int i) {
@@ -194,30 +224,70 @@ public class Player extends Entity {
         }
     }
 
+    public void damageMonster(int i) {
+
+        if (i != 999) {
+
+            if (!gp.monster[i].invincible) {
+
+                gp.monster[i].health -= 1;
+                gp.monster[i].invincible = true;
+
+                if (gp.monster[i].health <= 0) {
+                    gp.monster[i] = null;
+                }
+            }
+        }
+    }
+
     public void draw (Graphics2D g2) {
 
         BufferedImage image = null;
 
         switch (direction) {
             case "up" -> {
-                if (spriteNum == 1) { image = up1; }
-                if (spriteNum == 2) { image = up2; }
-                if (spriteNum == 3) { image = up3; }
+                if (!attacking) {
+                    if (spriteNum == 1) { image = up1; }
+                    if (spriteNum == 2) { image = up2; }
+                    if (spriteNum == 3) { image = up3; }
+                }
+                if (attacking) {
+                    if (spriteNum == 1) { image = attUp1; }
+                    if (spriteNum == 2) { image = attUp2; }
+                }
             }
             case "down" -> {
-                if (spriteNum == 1) { image = down1; }
-                if (spriteNum == 2) { image = down2; }
-                if (spriteNum == 3) { image = down3; }
+                if (!attacking) {
+                    if (spriteNum == 1) { image = down1; }
+                    if (spriteNum == 2) { image = down2; }
+                    if (spriteNum == 3) { image = down3; }
+                }
+                if (attacking) {
+                    if (spriteNum == 1) { image = attDown1; }
+                    if (spriteNum == 2) { image = attDown2; }
+                }
             }
             case "left" -> {
-                if (spriteNum == 1) { image = left1; }
-                if (spriteNum == 2) { image = left2; }
-                if (spriteNum == 3) { image = left3; }
+                if (!attacking) {
+                    if (spriteNum == 1) { image = left1; }
+                    if (spriteNum == 2) { image = left2; }
+                    if (spriteNum == 3) { image = left3; }
+                }
+                if (attacking) {
+                    if (spriteNum == 1) { image = attLeft1; }
+                    if (spriteNum == 2) { image = attLeft2; }
+                }
             }
             case "right" -> {
-                if (spriteNum == 1) { image = right1; }
-                if (spriteNum == 2) { image = right2; }
-                if (spriteNum == 3) { image = right3; }
+                if (!attacking) {
+                    if (spriteNum == 1) { image = right1; }
+                    if (spriteNum == 2) { image = right2; }
+                    if (spriteNum == 3) { image = right3; }
+                }
+                if (attacking) {
+                    if (spriteNum == 1) { image = attRight1; }
+                    if (spriteNum == 2) { image = attRight2; }
+                }
             }
         }
 
