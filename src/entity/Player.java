@@ -2,6 +2,8 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Shield_Wood;
+import object.OBJ_Sword_Normal;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -47,8 +49,26 @@ public class Player extends Entity {
         direction = "down";
 
         // Player status
+        level = 1;
         maxHealth = 6;
         health = maxHealth;
+        strength = 1; // More str = more DMG
+        dexterity = 1; // More dex = less DMG taken
+        exp = 0;
+        nextLevelExp = 10;
+        coin = 0;
+        currentWeapon = new OBJ_Sword_Normal(gp);
+        currentShield = new OBJ_Shield_Wood(gp);
+        attack = getAttack(); // Total attack = str + weapon
+        defence = getDefence(); // Total def = dex + shield
+    }
+
+    public int getAttack() {
+        return attack = strength * currentWeapon.attackVal;
+    }
+
+    public int getDefence() {
+        return  defence = dexterity * currentShield.defenceVal;
     }
 
     public void getPlayerImage () {
