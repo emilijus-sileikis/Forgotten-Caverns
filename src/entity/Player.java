@@ -207,6 +207,7 @@ public class Player extends Entity {
         }
         else {
             if (gp.keyH.enterPressed) {
+                gp.playSE(6);
                 attacking = true;
             }
         }
@@ -218,6 +219,7 @@ public class Player extends Entity {
         if (i != 999) {
 
             if (!invincible) {
+                gp.playSE(5);
                 health -= 1;
                 invincible = true;
             }
@@ -230,11 +232,13 @@ public class Player extends Entity {
 
             if (!gp.monster[i].invincible) {
 
+                gp.playSE(5);
                 gp.monster[i].health -= 1;
                 gp.monster[i].invincible = true;
+                gp.monster[i].damageReaction();
 
                 if (gp.monster[i].health <= 0) {
-                    gp.monster[i] = null;
+                    gp.monster[i].dying = true;
                 }
             }
         }
