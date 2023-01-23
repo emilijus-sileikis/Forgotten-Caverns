@@ -272,6 +272,7 @@ public class Player extends Entity {
                 if (gp.monster[i].health <= 0) {
                     gp.monster[i].dying = true;
                     exp += gp.monster[i].exp;
+                    gp.ui.addMessage("+" + gp.monster[i].exp + " EXP");
                     checkLevelUp();
                 }
             }
@@ -290,8 +291,9 @@ public class Player extends Entity {
             defence = getDefence();
 
             gp.playSE(7);
-            gp.gameState = gp.dialogueState;
-            gp.ui.currentDialogue = "You have reached level: " + level + "!";
+            gp.ui.addMessage("You have reached level: " + level + "!");
+            //gp.gameState = gp.dialogueState;
+            //gp.ui.currentDialogue = "You have reached level: " + level + "!";
         }
     }
 
