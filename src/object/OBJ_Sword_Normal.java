@@ -11,5 +11,6 @@ public class OBJ_Sword_Normal extends Entity {
         name = "Normal Sword";
         down1 = setup("/res/objects/sword_normal",gp.tileSize,gp.tileSize);
         attackVal = 1;
+        descr = "[" + name + "]\nAn old ordinary \nsword.";
     }
 }

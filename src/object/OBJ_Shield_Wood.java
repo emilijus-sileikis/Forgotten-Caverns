@@ -11,5 +11,6 @@ public class OBJ_Shield_Wood extends Entity {
         name = "Wooden Shield";
         down1 = setup("/res/objects/shield_wood",gp.tileSize, gp.tileSize);
         defenceVal = 1;
+        descr = "[" + name + "]\nOrdinary wooden \nshield.";
     }
 }

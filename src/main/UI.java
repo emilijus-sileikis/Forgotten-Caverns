@@ -118,6 +118,30 @@ public class UI {
         g2.setStroke(new BasicStroke(3));
         g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10,10);
 
+        // Descr frame
+        int dFrameY = frameY + frameHeight;
+        int dFrameHeight = gp.tileSize*3;
+        drawSubWindow(frameX, dFrameY, frameWidth, dFrameHeight);
+
+        // Descr text
+        int textX = frameX + 20;
+        int textY = dFrameY + gp.tileSize;
+        g2.setFont(g2.getFont().deriveFont(15F));
+
+        int itemIndex = getItemIndexOnSlot();
+
+        if (itemIndex < gp.player.inventory.size()) {
+
+            for (String line: gp.player.inventory.get(itemIndex).descr.split("\n")) {
+                g2.drawString(line, textX, textY);
+                textY += 32;
+            }
+        }
+
+    }
+
+    public int getItemIndexOnSlot() {
+        return slotCol + (slotRow*5);
     }
 
     public void drawMessage() {
