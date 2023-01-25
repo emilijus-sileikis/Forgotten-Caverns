@@ -192,8 +192,8 @@ public class Player extends Entity {
 
         if (gp.keyH.shotPressed && !projectile.alive) {
 
-            // Set projectile coords
-            projectile.set(worldX+2, worldY+2, direction, true, this);
+            // Set projectile coords //TODO FIX COORDINATES!!!!! (Pakeist phoot, kad butu 32X64, 64X32 arba kazka kito)
+            projectile.set(worldX+25, worldY+30, direction, true, this);
 
             // Add to list
             gp.projectileList.add(projectile);
