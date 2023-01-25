@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Fireball;
 import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
@@ -38,9 +39,6 @@ public class Player extends Entity {
         solidArea.width = 32; //32
         solidArea.height = 32; //32
 
-//        attackArea.width = 36;
-//        attackArea.height = 36;
-
         setDefaultValues();
         getPlayerImage();
         getPlayerAttackImage();
@@ -65,6 +63,7 @@ public class Player extends Entity {
         coin = 0;
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
+        projectile = new OBJ_Fireball(gp);
         attack = getAttack(); // Total attack = str + weapon
         defence = getDefence(); // Total def = dex + shield
     }
@@ -191,6 +190,17 @@ public class Player extends Entity {
             }
         }
 
+        if (gp.keyH.shotPressed && !projectile.alive) {
+
+            // Set projectile coords
+            projectile.set(worldX+2, worldY+2, direction, true, this);
+
+            // Add to list
+            gp.projectileList.add(projectile);
+
+//            gp.playSE(9);
+        }
+
         if (invincible) {
             invincibleCounter++;
             if (invincibleCounter > 120) { //120 = 2s, default 60
@@ -287,7 +297,7 @@ public class Player extends Entity {
 
         if (i != 999) {
 
-            if (!invincible) {
+            if (!invincible && !gp.monster[i].dying) {
                 gp.playSE(5);
 
                 int damage = gp.monster[i].attack - defence;
