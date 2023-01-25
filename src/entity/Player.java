@@ -38,8 +38,8 @@ public class Player extends Entity {
         solidArea.width = 32; //32
         solidArea.height = 32; //32
 
-        attackArea.width = 36;
-        attackArea.height = 36;
+//        attackArea.width = 36;
+//        attackArea.height = 36;
 
         setDefaultValues();
         getPlayerImage();
@@ -77,6 +77,7 @@ public class Player extends Entity {
     }
 
     public int getAttack() {
+        attackArea = currentWeapon.attackArea;
         return attack = strength * currentWeapon.attackVal;
     }
 
@@ -101,14 +102,32 @@ public class Player extends Entity {
     }
 
     public void getPlayerAttackImage() {
-        attUp1 = setup("/res/player/boy_attack_up_1", gp.tileSize*2, gp.tileSize*2);
-        attUp2 = setup("/res/player/boy_attack_up_2", gp.tileSize*2, gp.tileSize*2);
-        attDown1 = setup("/res/player/boy_attack_down_1", gp.tileSize*2, gp.tileSize*2);
-        attDown2 = setup("/res/player/boy_attack_down_2", gp.tileSize*2, gp.tileSize*2);
-        attLeft1 = setup("/res/player/boy_attack_left_1", gp.tileSize*2, gp.tileSize*2);
-        attLeft2 = setup("/res/player/boy_attack_left_2", gp.tileSize*2, gp.tileSize*2);
-        attRight1 = setup("/res/player/boy_attack_right_1", gp.tileSize*2, gp.tileSize*2);
-        attRight2 = setup("/res/player/boy_attack_right_2", gp.tileSize*2, gp.tileSize*2);
+
+        if (currentWeapon.type == type_sword) {
+            if (currentWeapon.name.equals("Ice Sword")) {
+                attUp1 = setup("/res/player/boy_attack_up_1_ice", gp.tileSize*2, gp.tileSize*2);
+                attUp2 = setup("/res/player/boy_attack_up_2_ice", gp.tileSize*2, gp.tileSize*2);
+                attDown1 = setup("/res/player/boy_attack_down_1_ice", gp.tileSize*2, gp.tileSize*2);
+                attDown2 = setup("/res/player/boy_attack_down_2_ice", gp.tileSize*2, gp.tileSize*2);
+                attLeft1 = setup("/res/player/boy_attack_left_1_ice", gp.tileSize*2, gp.tileSize*2);
+                attLeft2 = setup("/res/player/boy_attack_left_2_ice", gp.tileSize*2, gp.tileSize*2);
+                attRight1 = setup("/res/player/boy_attack_right_1_ice", gp.tileSize*2, gp.tileSize*2);
+                attRight2 = setup("/res/player/boy_attack_right_2_ice", gp.tileSize*2, gp.tileSize*2);
+            }
+            if (currentWeapon.name.equals("Normal Sword")) {
+                attUp1 = setup("/res/player/boy_attack_up_1", gp.tileSize*2, gp.tileSize*2);
+                attUp2 = setup("/res/player/boy_attack_up_2", gp.tileSize*2, gp.tileSize*2);
+                attDown1 = setup("/res/player/boy_attack_down_1", gp.tileSize*2, gp.tileSize*2);
+                attDown2 = setup("/res/player/boy_attack_down_2", gp.tileSize*2, gp.tileSize*2);
+                attLeft1 = setup("/res/player/boy_attack_left_1", gp.tileSize*2, gp.tileSize*2);
+                attLeft2 = setup("/res/player/boy_attack_left_2", gp.tileSize*2, gp.tileSize*2);
+                attRight1 = setup("/res/player/boy_attack_right_1", gp.tileSize*2, gp.tileSize*2);
+                attRight2 = setup("/res/player/boy_attack_right_2", gp.tileSize*2, gp.tileSize*2);
+            }
+        }
+        if (currentWeapon.type == type_axe) {
+            // TODO later
+        }
     }
 
     public void update () {
@@ -236,7 +255,7 @@ public class Player extends Entity {
             if (inventory.size() != maxInvSize) {
                 inventory.add(gp.obj[i]);
                 gp.playSE(1);
-                text = "You found a " + gp.obj[i].name + "!";
+                text = "You found " + gp.obj[i].name + "!";
             }
             else {
                 text = "Your inventory is full!";
@@ -324,6 +343,29 @@ public class Player extends Entity {
             gp.ui.addMessage("You have reached level: " + level + "!");
             //gp.gameState = gp.dialogueState;
             //gp.ui.currentDialogue = "You have reached level: " + level + "!";
+        }
+    }
+
+    public void selectItem () {
+
+        int itemIndex = gp.ui.getItemIndexOnSlot();
+
+        if (itemIndex < inventory.size()) {
+
+            Entity selectedItem = inventory.get(itemIndex);
+
+            if (selectedItem.type == type_sword || selectedItem.type == type_axe) {
+                currentWeapon = selectedItem;
+                attack = getAttack();
+                getPlayerAttackImage();
+            }
+            if (selectedItem.type == type_shield) {
+                currentShield = selectedItem;
+                defence = getDefence();
+            }
+            if (selectedItem.type == type_consumable) {
+                // TODO later
+            }
         }
     }
 

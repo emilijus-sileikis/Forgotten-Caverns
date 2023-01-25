@@ -3,6 +3,7 @@ package main;
 import entity.NPC_Girl;
 import monster.MON_GreenSlime;
 import object.OBJ_Key;
+import object.OBJ_Sword_Ice;
 
 public class AssetSetter {
 
@@ -24,6 +25,11 @@ public class AssetSetter {
         gp.obj[i] = new OBJ_Key(gp);
         gp.obj[i].worldX = gp.tileSize*21;
         gp.obj[i].worldY = gp.tileSize*22;
+        i++;
+
+        gp.obj[i] = new OBJ_Sword_Ice(gp);
+        gp.obj[i].worldX = gp.tileSize*23;
+        gp.obj[i].worldY = gp.tileSize*25;
     }
 
     public void setNPC () {
