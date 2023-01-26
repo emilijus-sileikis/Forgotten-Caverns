@@ -125,7 +125,14 @@ public class Player extends Entity {
             }
         }
         if (currentWeapon.type == type_axe) {
-            // TODO later
+            attUp1 = setup("/res/player/boy_axe_up_1", gp.tileSize*2, gp.tileSize*2);
+            attUp2 = setup("/res/player/boy_axe_up_2", gp.tileSize*2, gp.tileSize*2);
+            attDown1 = setup("/res/player/boy_axe_down_1", gp.tileSize*2, gp.tileSize*2);
+            attDown2 = setup("/res/player/boy_axe_down_2", gp.tileSize*2, gp.tileSize*2);
+            attLeft1 = setup("/res/player/boy_axe_left_1", gp.tileSize*2, gp.tileSize*2);
+            attLeft2 = setup("/res/player/boy_axe_left_2", gp.tileSize*2, gp.tileSize*2);
+            attRight1 = setup("/res/player/boy_axe_right_1", gp.tileSize*2, gp.tileSize*2);
+            attRight2 = setup("/res/player/boy_axe_right_2", gp.tileSize*2, gp.tileSize*2);
         }
     }
 
@@ -214,10 +221,10 @@ public class Player extends Entity {
 
         spriteCounter++;
 
-        if (spriteCounter <=5) {
+        if (spriteCounter <= 7) { //5
             spriteNum = 1;
         }
-        if (spriteCounter > 5 && spriteCounter <= 25) {
+        if (spriteCounter > 7 && spriteCounter <= 25) {
             spriteNum = 2;
 
             // get current areas

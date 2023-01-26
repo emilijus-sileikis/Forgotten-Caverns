@@ -5,6 +5,7 @@ import monster.MON_GreenSlime;
 import object.OBJ_Health;
 import object.OBJ_Key;
 import object.OBJ_Sword_Ice;
+import object.OBJ_Axe;
 
 public class AssetSetter {
 
@@ -36,6 +37,11 @@ public class AssetSetter {
         gp.obj[i] = new OBJ_Health(gp);
         gp.obj[i].worldX = gp.tileSize*23;
         gp.obj[i].worldY = gp.tileSize*28;
+        i++;
+
+        gp.obj[i] = new OBJ_Axe(gp);
+        gp.obj[i].worldX = gp.tileSize*23;
+        gp.obj[i].worldY = gp.tileSize*30;
     }
 
     public void setNPC () {
