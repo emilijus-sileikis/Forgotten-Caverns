@@ -197,13 +197,15 @@ public class Player extends Entity {
             }
         }
 
-        if (gp.keyH.shotPressed && !projectile.alive) {
+        if (gp.keyH.shotPressed && !projectile.alive && shotAvailableCounter == 30) {
 
-            // Set projectile coords //TODO FIX COORDINATES!!!!! (Pakeist phoot, kad butu 32X64, 64X32 arba kazka kito)
+            // Set projectile coords //TODO FIX COORDINATES!!!!! (Pakeist photo, kad butu 32X64, 64X32 arba kazka kito)
             projectile.set(worldX+25, worldY+30, direction, true, this);
 
             // Add to list
             gp.projectileList.add(projectile);
+
+            shotAvailableCounter = 0;
 
 //            gp.playSE(9);
         }
@@ -214,6 +216,9 @@ public class Player extends Entity {
                 invincible = false;
                 invincibleCounter = 0;
             }
+        }
+        if (shotAvailableCounter < 30) {
+            shotAvailableCounter++;
         }
     }
 
@@ -247,7 +252,7 @@ public class Player extends Entity {
 
             // check collision
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex);
+            damageMonster(monsterIndex, attack);
 
             // restore original data
             worldX = currentWorldX;
@@ -318,7 +323,7 @@ public class Player extends Entity {
         }
     }
 
-    public void damageMonster(int i) {
+    public void damageMonster(int i, int attack) {
 
         if (i != 999) {
 
