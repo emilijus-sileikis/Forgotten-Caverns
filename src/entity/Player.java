@@ -56,6 +56,8 @@ public class Player extends Entity {
         level = 1;
         maxHealth = 6;
         health = maxHealth;
+        maxMana = 4;
+        mana = maxMana;
         strength = 1; // More str = more DMG
         dexterity = 1; // More dex = less DMG taken
         exp = 0;
@@ -197,10 +199,13 @@ public class Player extends Entity {
             }
         }
 
-        if (gp.keyH.shotPressed && !projectile.alive && shotAvailableCounter == 30) {
+        if (gp.keyH.shotPressed && !projectile.alive && shotAvailableCounter == 30 && projectile.haveResource(this)) {
 
             // Set projectile coords //TODO FIX COORDINATES!!!!! (Pakeist photo, kad butu 32X64, 64X32 arba kazka kito)
             projectile.set(worldX+25, worldY+30, direction, true, this);
+
+            // Subtract mana
+            projectile.subtractResource(this);
 
             // Add to list
             gp.projectileList.add(projectile);
