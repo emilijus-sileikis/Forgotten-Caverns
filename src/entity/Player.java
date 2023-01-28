@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Fireball;
 import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
@@ -38,9 +39,6 @@ public class Player extends Entity {
         solidArea.width = 32; //32
         solidArea.height = 32; //32
 
-        attackArea.width = 36;
-        attackArea.height = 36;
-
         setDefaultValues();
         getPlayerImage();
         getPlayerAttackImage();
@@ -65,6 +63,7 @@ public class Player extends Entity {
         coin = 0;
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
+        projectile = new OBJ_Fireball(gp);
         attack = getAttack(); // Total attack = str + weapon
         defence = getDefence(); // Total def = dex + shield
     }
@@ -77,6 +76,7 @@ public class Player extends Entity {
     }
 
     public int getAttack() {
+        attackArea = currentWeapon.attackArea;
         return attack = strength * currentWeapon.attackVal;
     }
 
@@ -101,14 +101,39 @@ public class Player extends Entity {
     }
 
     public void getPlayerAttackImage() {
-        attUp1 = setup("/res/player/boy_attack_up_1", gp.tileSize*2, gp.tileSize*2);
-        attUp2 = setup("/res/player/boy_attack_up_2", gp.tileSize*2, gp.tileSize*2);
-        attDown1 = setup("/res/player/boy_attack_down_1", gp.tileSize*2, gp.tileSize*2);
-        attDown2 = setup("/res/player/boy_attack_down_2", gp.tileSize*2, gp.tileSize*2);
-        attLeft1 = setup("/res/player/boy_attack_left_1", gp.tileSize*2, gp.tileSize*2);
-        attLeft2 = setup("/res/player/boy_attack_left_2", gp.tileSize*2, gp.tileSize*2);
-        attRight1 = setup("/res/player/boy_attack_right_1", gp.tileSize*2, gp.tileSize*2);
-        attRight2 = setup("/res/player/boy_attack_right_2", gp.tileSize*2, gp.tileSize*2);
+
+        if (currentWeapon.type == type_sword) {
+            if (currentWeapon.name.equals("Ice Sword")) {
+                attUp1 = setup("/res/player/boy_attack_up_1_ice", gp.tileSize*2, gp.tileSize*2);
+                attUp2 = setup("/res/player/boy_attack_up_2_ice", gp.tileSize*2, gp.tileSize*2);
+                attDown1 = setup("/res/player/boy_attack_down_1_ice", gp.tileSize*2, gp.tileSize*2);
+                attDown2 = setup("/res/player/boy_attack_down_2_ice", gp.tileSize*2, gp.tileSize*2);
+                attLeft1 = setup("/res/player/boy_attack_left_1_ice", gp.tileSize*2, gp.tileSize*2);
+                attLeft2 = setup("/res/player/boy_attack_left_2_ice", gp.tileSize*2, gp.tileSize*2);
+                attRight1 = setup("/res/player/boy_attack_right_1_ice", gp.tileSize*2, gp.tileSize*2);
+                attRight2 = setup("/res/player/boy_attack_right_2_ice", gp.tileSize*2, gp.tileSize*2);
+            }
+            if (currentWeapon.name.equals("Normal Sword")) {
+                attUp1 = setup("/res/player/boy_attack_up_1", gp.tileSize*2, gp.tileSize*2);
+                attUp2 = setup("/res/player/boy_attack_up_2", gp.tileSize*2, gp.tileSize*2);
+                attDown1 = setup("/res/player/boy_attack_down_1", gp.tileSize*2, gp.tileSize*2);
+                attDown2 = setup("/res/player/boy_attack_down_2", gp.tileSize*2, gp.tileSize*2);
+                attLeft1 = setup("/res/player/boy_attack_left_1", gp.tileSize*2, gp.tileSize*2);
+                attLeft2 = setup("/res/player/boy_attack_left_2", gp.tileSize*2, gp.tileSize*2);
+                attRight1 = setup("/res/player/boy_attack_right_1", gp.tileSize*2, gp.tileSize*2);
+                attRight2 = setup("/res/player/boy_attack_right_2", gp.tileSize*2, gp.tileSize*2);
+            }
+        }
+        if (currentWeapon.type == type_axe) {
+            attUp1 = setup("/res/player/boy_axe_up_1", gp.tileSize*2, gp.tileSize*2);
+            attUp2 = setup("/res/player/boy_axe_up_2", gp.tileSize*2, gp.tileSize*2);
+            attDown1 = setup("/res/player/boy_axe_down_1", gp.tileSize*2, gp.tileSize*2);
+            attDown2 = setup("/res/player/boy_axe_down_2", gp.tileSize*2, gp.tileSize*2);
+            attLeft1 = setup("/res/player/boy_axe_left_1", gp.tileSize*2, gp.tileSize*2);
+            attLeft2 = setup("/res/player/boy_axe_left_2", gp.tileSize*2, gp.tileSize*2);
+            attRight1 = setup("/res/player/boy_axe_right_1", gp.tileSize*2, gp.tileSize*2);
+            attRight2 = setup("/res/player/boy_axe_right_2", gp.tileSize*2, gp.tileSize*2);
+        }
     }
 
     public void update () {
@@ -172,6 +197,19 @@ public class Player extends Entity {
             }
         }
 
+        if (gp.keyH.shotPressed && !projectile.alive && shotAvailableCounter == 30) {
+
+            // Set projectile coords //TODO FIX COORDINATES!!!!! (Pakeist photo, kad butu 32X64, 64X32 arba kazka kito)
+            projectile.set(worldX+25, worldY+30, direction, true, this);
+
+            // Add to list
+            gp.projectileList.add(projectile);
+
+            shotAvailableCounter = 0;
+
+//            gp.playSE(9);
+        }
+
         if (invincible) {
             invincibleCounter++;
             if (invincibleCounter > 120) { //120 = 2s, default 60
@@ -179,16 +217,19 @@ public class Player extends Entity {
                 invincibleCounter = 0;
             }
         }
+        if (shotAvailableCounter < 30) {
+            shotAvailableCounter++;
+        }
     }
 
     private void attacking() {
 
         spriteCounter++;
 
-        if (spriteCounter <=5) {
+        if (spriteCounter <= 7) { //5
             spriteNum = 1;
         }
-        if (spriteCounter > 5 && spriteCounter <= 25) {
+        if (spriteCounter > 7 && spriteCounter <= 25) {
             spriteNum = 2;
 
             // get current areas
@@ -211,7 +252,7 @@ public class Player extends Entity {
 
             // check collision
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex);
+            damageMonster(monsterIndex, attack);
 
             // restore original data
             worldX = currentWorldX;
@@ -227,7 +268,24 @@ public class Player extends Entity {
         }
     }
 
-    public void pickUpObject (int i) {}
+    public void pickUpObject (int i) {
+
+        if (i != 999) {
+
+            String text;
+
+            if (inventory.size() != maxInvSize) {
+                inventory.add(gp.obj[i]);
+                gp.playSE(1);
+                text = "You found " + gp.obj[i].name + "!";
+            }
+            else {
+                text = "Your inventory is full!";
+            }
+            gp.ui.addMessage(text);
+            gp.obj[i] = null;
+        }
+    }
 
     public void interactNPC (int i) {
 
@@ -251,7 +309,7 @@ public class Player extends Entity {
 
         if (i != 999) {
 
-            if (!invincible) {
+            if (!invincible && !gp.monster[i].dying) {
                 gp.playSE(5);
 
                 int damage = gp.monster[i].attack - defence;
@@ -265,7 +323,7 @@ public class Player extends Entity {
         }
     }
 
-    public void damageMonster(int i) {
+    public void damageMonster(int i, int attack) {
 
         if (i != 999) {
 
@@ -307,6 +365,30 @@ public class Player extends Entity {
             gp.ui.addMessage("You have reached level: " + level + "!");
             //gp.gameState = gp.dialogueState;
             //gp.ui.currentDialogue = "You have reached level: " + level + "!";
+        }
+    }
+
+    public void selectItem () {
+
+        int itemIndex = gp.ui.getItemIndexOnSlot();
+
+        if (itemIndex < inventory.size()) {
+
+            Entity selectedItem = inventory.get(itemIndex);
+
+            if (selectedItem.type == type_sword || selectedItem.type == type_axe) {
+                currentWeapon = selectedItem;
+                attack = getAttack();
+                getPlayerAttackImage();
+            }
+            if (selectedItem.type == type_shield) {
+                currentShield = selectedItem;
+                defence = getDefence();
+            }
+            if (selectedItem.type == type_consumable) {
+                selectedItem.use(this);
+                inventory.remove(itemIndex);
+            }
         }
     }
 

@@ -36,15 +36,17 @@ public class Entity {
     public int spriteCounter = 0;
     public int actionLockCounter = 0;
     public int invincibleCounter = 0;
+    public int shotAvailableCounter = 0;
     int dyingCounter = 0;
     int hpBarCounter = 0;
 
     // Character
-    public int type; // 0 = player, 1 = npc, 2 = monster...
     public String name;
     public int speed;
     public int maxHealth;
     public int health;
+    public int mana;
+    public int maxMana;
     public int level;
     public int strength;
     public int dexterity;
@@ -55,11 +57,23 @@ public class Entity {
     public int coin;
     public Entity currentWeapon;
     public Entity currentShield;
+    public Projectile projectile;
 
     // Item
     public int attackVal;
     public int defenceVal;
+    public int useCost;
     public String descr = "";
+
+    // Type
+    public int type; // 0 = player, 1 = npc, 2 = monster...
+    public final int type_player = 0;
+    public final int type_npc = 1;
+    public final int type_monster = 2;
+    public final int type_sword = 3;
+    public final int type_axe = 4;
+    public final int type_shield = 5;
+    public final int type_consumable = 6;
 
     public Entity (GamePanel gp) {
         this.gp = gp;
@@ -67,6 +81,7 @@ public class Entity {
 
     public void setAction () {}
     public void damageReaction () {}
+    public void use (Entity entity) {}
     public void speak () {
 
         if (dialogues[dialogueIndex] == null) { dialogueIndex = 0; }
@@ -92,7 +107,7 @@ public class Entity {
         gp.cChecker.checkEntity(this, gp.monster);
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
-        if (this.type == 2 && contactPlayer) {
+        if (this.type == type_monster && contactPlayer) {
             if (!gp.player.invincible) {
                 gp.playSE(5);
 
@@ -223,7 +238,6 @@ public class Entity {
         if (dyingCounter > i*7 && dyingCounter <= i*8) { changeAlpha(g2, 1f); }
 
         if (dyingCounter > i*8) {
-            dying = false;
             alive = false;
         }
     }
