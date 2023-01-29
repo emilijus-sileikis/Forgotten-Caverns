@@ -16,10 +16,10 @@ public class OBJ_Heart extends Entity {
         type = type_pickupOnly;
         name = "Heart";
         value = 2;
-        down1 = setup("/res/objects/heart_full", gp.tileSize*2, gp.tileSize*2);
-        image = setup("/res/objects/heart_full", gp.tileSize, gp.tileSize);
-        image2 = setup("/res/objects/heart_half", gp.tileSize, gp.tileSize);
-        image3 = setup("/res/objects/heart_empty", gp.tileSize, gp.tileSize);
+        down1 = setup("/res/objects/heart_full", gp.tileSize, gp.tileSize);
+        image = setup("/res/objects/heart_full", (int) (gp.tileSize*1.5), (int) (gp.tileSize*1.5));
+        image2 = setup("/res/objects/heart_half", (int) (gp.tileSize*1.5), (int) (gp.tileSize*1.5));
+        image3 = setup("/res/objects/heart_empty", (int) (gp.tileSize*1.5), (int) (gp.tileSize*1.5));
     }
 
     public void use(Entity entity) {

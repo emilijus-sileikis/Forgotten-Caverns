@@ -184,20 +184,20 @@ public class UI {
 
     public void drawPlayerHealth () {
 
-        int x = gp.tileSize/2;
-        int y = gp.tileSize/2;
+        int x = gp.tileSize/4; //gp.tileSize/2
+        int y = gp.tileSize/6; //gp.tileSize/2
         int i = 0;
 
         // Empty hearts
         while (i < gp.player.maxHealth/2) {
             g2.drawImage(heart_empty, x, y, null);
             i++;
-            x += gp.tileSize;
+            x += 40; //gp.tileSize
         }
 
         // Reset
-        x = gp.tileSize/2;
-        y = gp.tileSize/2;
+        x = gp.tileSize/4; //gp.tileSize/2
+        y = gp.tileSize/6; //gp.tileSize/2
         i = 0;
 
         // Paint current hearts
@@ -206,12 +206,12 @@ public class UI {
             i++;
             if (i < gp.player.health) { g2.drawImage(heart_full, x, y, null); }
             i++;
-            x += gp.tileSize;
+            x += 40;
         }
 
         // Draw max mana
         x = (gp.tileSize/2);
-        y = (int) (gp.tileSize*1.5);
+        y = gp.tileSize + 10;
         i = 0;
          while (i < gp.player.maxMana) {
              g2.drawImage(mana_empty, x, y, null);
@@ -221,7 +221,7 @@ public class UI {
 
          // Draw mana
         x = (gp.tileSize/2);
-        y = (int) (gp.tileSize*1.5);
+        y = gp.tileSize + 10;
         i = 0;
         while (i < gp.player.mana) {
             g2.drawImage(mana_full, x, y, null);
