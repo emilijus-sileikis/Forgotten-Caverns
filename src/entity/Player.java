@@ -4,6 +4,7 @@ import main.GamePanel;
 import main.KeyHandler;
 import object.OBJ_Fireball;
 import object.OBJ_Key;
+import object.OBJ_Rock;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
 
@@ -58,6 +59,7 @@ public class Player extends Entity {
         health = maxHealth;
         maxMana = 4;
         mana = maxMana;
+        ammo = 10;
         strength = 1; // More str = more DMG
         dexterity = 1; // More dex = less DMG taken
         exp = 0;
@@ -66,6 +68,7 @@ public class Player extends Entity {
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
         projectile = new OBJ_Fireball(gp);
+//        projectile = new OBJ_Rock(gp);
         attack = getAttack(); // Total attack = str + weapon
         defence = getDefence(); // Total def = dex + shield
     }
@@ -222,9 +225,9 @@ public class Player extends Entity {
                 invincibleCounter = 0;
             }
         }
-        if (shotAvailableCounter < 30) {
-            shotAvailableCounter++;
-        }
+        if (shotAvailableCounter < 30) { shotAvailableCounter++; }
+        if (health > maxHealth) { health = maxHealth; }
+        if (mana > maxMana) { mana = maxMana; }
     }
 
     private void attacking() {
@@ -277,18 +280,28 @@ public class Player extends Entity {
 
         if (i != 999) {
 
-            String text;
+            // PickupOnly items
+            if (gp.obj[i].type == type_pickupOnly) {
 
-            if (inventory.size() != maxInvSize) {
-                inventory.add(gp.obj[i]);
-                gp.playSE(1);
-                text = "You found " + gp.obj[i].name + "!";
+                gp.obj[i].use(this);
+                gp.obj[i] = null;
             }
+
+            // INV items
             else {
-                text = "Your inventory is full!";
+                String text;
+
+                if (inventory.size() != maxInvSize) {
+                    inventory.add(gp.obj[i]);
+                    gp.playSE(1);
+                    text = "You found " + gp.obj[i].name + "!";
+                }
+                else {
+                    text = "Your inventory is full!";
+                }
+                gp.ui.addMessage(text);
+                gp.obj[i] = null;
             }
-            gp.ui.addMessage(text);
-            gp.obj[i] = null;
         }
     }
 
@@ -361,6 +374,7 @@ public class Player extends Entity {
             level++;
             nextLevelExp = nextLevelExp*2;
             maxHealth += 2;
+            maxMana += 1;
             strength++;
             dexterity++;
             attack = getAttack();

@@ -2,9 +2,10 @@ package main;
 
 import entity.NPC_Girl;
 import monster.MON_GreenSlime;
+import object.OBJ_Coin_Gold;
 import object.OBJ_Health;
-import object.OBJ_Key;
-import object.OBJ_Sword_Ice;
+import object.OBJ_Heart;
+import object.OBJ_ManaCrystal;
 import object.OBJ_Axe;
 
 public class AssetSetter {
@@ -19,17 +20,17 @@ public class AssetSetter {
 
         int i = 0;
 
-        gp.obj[i] = new OBJ_Key(gp);
+        gp.obj[i] = new OBJ_Coin_Gold(gp);
         gp.obj[i].worldX = gp.tileSize*25;
         gp.obj[i].worldY = gp.tileSize*20;
         i++;
 
-        gp.obj[i] = new OBJ_Key(gp);
+        gp.obj[i] = new OBJ_Heart(gp);
         gp.obj[i].worldX = gp.tileSize*21;
         gp.obj[i].worldY = gp.tileSize*22;
         i++;
 
-        gp.obj[i] = new OBJ_Sword_Ice(gp);
+        gp.obj[i] = new OBJ_ManaCrystal(gp);
         gp.obj[i].worldX = gp.tileSize*23;
         gp.obj[i].worldY = gp.tileSize*25;
         i++;

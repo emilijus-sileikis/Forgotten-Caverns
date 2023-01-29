@@ -47,6 +47,7 @@ public class Entity {
     public int health;
     public int mana;
     public int maxMana;
+    public int ammo;
     public int level;
     public int strength;
     public int dexterity;
@@ -60,6 +61,7 @@ public class Entity {
     public Projectile projectile;
 
     // Item
+    public int value;
     public int attackVal;
     public int defenceVal;
     public int useCost;
@@ -74,6 +76,7 @@ public class Entity {
     public final int type_axe = 4;
     public final int type_shield = 5;
     public final int type_consumable = 6;
+    public final int type_pickupOnly = 7;
 
     public Entity (GamePanel gp) {
         this.gp = gp;
@@ -82,6 +85,17 @@ public class Entity {
     public void setAction () {}
     public void damageReaction () {}
     public void use (Entity entity) {}
+    public void checkDrop() {}
+    public void dropItem(Entity item) {
+        for (int i = 0; i < gp.obj.length; i++) {
+            if (gp.obj[i] == null) {
+                gp.obj[i] = item;
+                gp.obj[i].worldX = worldX;
+                gp.obj[i].worldY = worldY;
+                break;
+            }
+        }
+    }
     public void speak () {
 
         if (dialogues[dialogueIndex] == null) { dialogueIndex = 0; }

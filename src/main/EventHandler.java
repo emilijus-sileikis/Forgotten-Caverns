@@ -92,8 +92,9 @@ public class EventHandler {
 
         if (gp.keyH.spacePressed) {
             gp.gameState = gameState;
-            gp.ui.currentDialogue = "The magical water restored \nyour health!";
+            gp.ui.currentDialogue = "The magical water restored \nyour health and mana!";
             gp.player.health = gp.player.maxHealth;
+            gp.player.mana = gp.player.maxMana;
         }
     }
 
