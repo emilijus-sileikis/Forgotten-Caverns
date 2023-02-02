@@ -287,6 +287,9 @@ public class Player extends Entity {
             gp.iTile[i].health--;
             gp.iTile[i].invincible = true; //So it wont get destroyed instantly
 
+            // Generate particle
+            generateParticle(gp.iTile[i], gp.iTile[i]);
+
             if (gp.iTile[i].health == 0) {
                 gp.iTile[i] = gp.iTile[i].getDestroyedForm();
             }
@@ -311,7 +314,7 @@ public class Player extends Entity {
                 if (inventory.size() != maxInvSize) {
                     inventory.add(gp.obj[i]);
                     gp.playSE(1);
-                    text = "You found " + gp.obj[i].name + "!";
+                    text = "You found:" + gp.obj[i].name + "!";
                 }
                 else {
                     text = "Your inventory is full!";

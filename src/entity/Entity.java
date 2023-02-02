@@ -96,6 +96,32 @@ public class Entity {
             }
         }
     }
+    public Color getParticleColor() {
+        return null;
+    }
+    public int getParticleSize() {
+        return 0; }
+    public int getParticleSpeed() {
+        return 0;
+    }
+    public int getParticleMaxHealth() {
+        return 0;
+    }
+    public void generateParticle(Entity generator, Entity target) {
+        Color color = generator.getParticleColor();
+        int size = generator.getParticleSize();
+        int speed = generator.getParticleSpeed();
+        int maxHealth = generator.getParticleMaxHealth();
+
+        Particle p1 = new Particle(gp, generator, color, size, speed, maxHealth, -2, -1);
+        Particle p2 = new Particle(gp, generator, color, size, speed, maxHealth, 2, -1);
+        Particle p3 = new Particle(gp, generator, color, size, speed, maxHealth, -2, 1);
+        Particle p4 = new Particle(gp, generator, color, size, speed, maxHealth, 2, 1);
+        gp.particleList.add(p1);
+        gp.particleList.add(p2);
+        gp.particleList.add(p3);
+        gp.particleList.add(p4);
+    }
     public void speak () {
 
         if (dialogues[dialogueIndex] == null) { dialogueIndex = 0; }
@@ -163,7 +189,6 @@ public class Entity {
             shotAvailableCounter++;
         }
     }
-
     public void damagePlayer (int attack) {
         if (!gp.player.invincible) {
             gp.playSE(5);
@@ -177,7 +202,6 @@ public class Entity {
             gp.player.invincible = true;
         }
     }
-
     public void draw (Graphics2D g2) {
 
         BufferedImage image = null;
@@ -243,7 +267,6 @@ public class Entity {
 
         }
     }
-
     public void dyingAnimation (Graphics2D g2) {
 
         dyingCounter++;
@@ -263,11 +286,9 @@ public class Entity {
             alive = false;
         }
     }
-
     public void changeAlpha (Graphics2D g2, float alphaValue) {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
     }
-
     public BufferedImage setup (String imageName, int width, int height) {
 
         UtilityTool uTool = new UtilityTool();
