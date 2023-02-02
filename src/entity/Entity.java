@@ -113,14 +113,11 @@ public class Entity {
         int speed = generator.getParticleSpeed();
         int maxHealth = generator.getParticleMaxHealth();
 
-        Particle p1 = new Particle(gp, generator, color, size, speed, maxHealth, -2, -1);
-        Particle p2 = new Particle(gp, generator, color, size, speed, maxHealth, 2, -1);
-        Particle p3 = new Particle(gp, generator, color, size, speed, maxHealth, -2, 1);
-        Particle p4 = new Particle(gp, generator, color, size, speed, maxHealth, 2, 1);
-        gp.particleList.add(p1);
-        gp.particleList.add(p2);
-        gp.particleList.add(p3);
-        gp.particleList.add(p4);
+        int[][] positions = {{-2, -1}, {2, -1}, {-2, 1}, {2, 1}, {-1, -2}, {1, -2}, {-1, 2}, {1, 2}};
+        for (int[] position : positions) {
+            Particle particle = new Particle(gp, generator, color, size, speed, maxHealth, position[0], position[1]);
+            gp.particleList.add(particle);
+        }
     }
     public void speak () {
 
