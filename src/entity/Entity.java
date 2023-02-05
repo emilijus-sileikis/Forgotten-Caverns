@@ -115,7 +115,7 @@ public class Entity {
 
         int[][] positions = {{-2, -1}, {2, -1}, {-2, 1}, {2, 1}, {-1, -2}, {1, -2}, {-1, 2}, {1, 2}};
         for (int[] position : positions) {
-            Particle particle = new Particle(gp, generator, color, size, speed, maxHealth, position[0], position[1]);
+            Particle particle = new Particle(gp, target, color, size, speed, maxHealth, position[0], position[1]);
             gp.particleList.add(particle);
         }
     }

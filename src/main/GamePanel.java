@@ -7,6 +7,7 @@ import tile_interactive.InteractiveTile;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -16,17 +17,23 @@ public class GamePanel extends JPanel implements Runnable {
     final int originalTileSize = 16; //16x16
     final int scale = 3;
 
-    public final int tileSize = originalTileSize * scale;
-    public final int maxSceenCol = 16;
+    public final int tileSize = originalTileSize * scale; // 48 x 48
+    public final int maxSceenCol = 20;
     public final int maxScreenRow = 12;
-    public int screenWidth = tileSize * maxSceenCol;
-    public int screenHeight = tileSize * maxScreenRow;
+    public int screenWidth = tileSize * maxSceenCol; // 960px
+    public int screenHeight = tileSize * maxScreenRow; // 576px
 
     // WORLD
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
+
+    // Full screen
+    int screenWidth2 = screenWidth;
+    int screenHeight2 = screenHeight;
+    BufferedImage tempScreen;
+    Graphics2D g2;
 
     // FPS
     int FPS = 60;
@@ -60,6 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int pauseState = 2;
     public final int dialogueState = 3;
     public final int characterState = 4;
+    private float fullScreenOffsetFactor;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -75,9 +83,26 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setNPC();
         aSetter.setMonster();
         aSetter.setInteractiveTile();
-
+//        playMusic(0);
         gameState = titleState;
 
+        tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
+        g2 = (Graphics2D) tempScreen.getGraphics();
+
+//        setupFullScreen();
+
+    }
+
+    public void setupFullScreen() {
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+        Main.window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        screenWidth2 = (int) width;
+        screenHeight2 = (int) height;
+        //offset factor to be used by mouse listener or mouse motion listener if you are using cursor in your game. Multiply your e.getX()e.getY() by this.
+        fullScreenOffsetFactor = (float) screenWidth / (float) screenWidth2;
     }
 
     public void startGameThread() {
@@ -101,9 +126,9 @@ public class GamePanel extends JPanel implements Runnable {
             lastTime = currentTime;
 
             if (delta >= 1) {
-
                 update();
-                repaint();
+                drawToTempScreen(); // Draws things to buffered image
+                drawToScreen(); // Draws the image to the screen
                 delta--;
             }
         }
@@ -167,10 +192,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void paintComponent(Graphics g) {
-
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
+    public void drawToTempScreen() {
 
         if (gameState == titleState) {
             ui.draw(g2);
@@ -236,8 +258,12 @@ public class GamePanel extends JPanel implements Runnable {
 
             ui.draw(g2);
         }
+    }
 
-        g2.dispose();
+    public void drawToScreen() {
+        Graphics g = getGraphics();
+        g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null);
+        g.dispose();
     }
 
     public void playMusic (int i) {
