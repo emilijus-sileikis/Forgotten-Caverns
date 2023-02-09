@@ -36,6 +36,9 @@ public class KeyHandler implements KeyListener {
 
         // Character state
         else if (gp.gameState == gp.characterState) { characterState(code); }
+
+        // Option state
+        else if (gp.gameState == gp.optionsState) { optionState(code); }
     }
 
     public void titleState(int code) {
@@ -62,16 +65,17 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) { downPressed = true; }
         if(code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) { leftPressed = true; }
         if(code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) { rightPressed = true; }
-        if(code == KeyEvent.VK_P || code == KeyEvent.VK_ESCAPE) { gp.gameState = gp.pauseState; }
+        if(code == KeyEvent.VK_P) { gp.gameState = gp.pauseState; }
         if(code == KeyEvent.VK_C) { gp.gameState = gp.characterState; }
         if(code == KeyEvent.VK_ENTER) { enterPressed = true; }
         if(code == KeyEvent.VK_SPACE) { spacePressed = true; }
         if(code == KeyEvent.VK_F) { shotPressed = true; }
+        if(code == KeyEvent.VK_ESCAPE) { gp.gameState = gp.optionsState; }
     }
 
     public void pauseState(int code) {
 
-        if (code == KeyEvent.VK_P || code == KeyEvent.VK_ESCAPE) { gp.gameState = gp.playState; }
+        if (code == KeyEvent.VK_P) { gp.gameState = gp.playState; }
     }
 
     public void dialogueState(int code) {
@@ -109,6 +113,59 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_ENTER) {
             gp.player.selectItem();
+        }
+    }
+
+    private void optionState(int code) {
+
+        if (code == KeyEvent.VK_ESCAPE) { gp.gameState = gp.playState; }
+        if (code == KeyEvent.VK_ENTER) { enterPressed= true; }
+
+        int maxCommandNum = 0;
+        switch (gp.ui.subState) {
+            case 0: maxCommandNum = 5; break;
+            case 3: maxCommandNum = 1; break;
+        }
+
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+            gp.ui.commandNum--;
+            gp.playSE(8);
+            if (gp.ui.commandNum < 0) {
+                gp.ui.commandNum = maxCommandNum;
+            }
+        }
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+            gp.ui.commandNum++;
+            gp.playSE(8);
+            if (gp.ui.commandNum > maxCommandNum) {
+                gp.ui.commandNum = 0;
+            }
+        }
+        if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+            if (gp.ui.subState == 0) {
+                if (gp.ui.commandNum == 1 && gp.music.volumeScale > 0) {
+                    gp.music.volumeScale--;
+                    gp.music.checkVolume();
+                    gp.playSE(8);
+                }
+                if (gp.ui.commandNum == 2 && gp.se.volumeScale > 0) {
+                    gp.se.volumeScale--;
+                    gp.playSE(8);
+                }
+            }
+        }
+        if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+            if (gp.ui.subState == 0) {
+                if (gp.ui.commandNum == 1 && gp.music.volumeScale < 5) {
+                    gp.music.volumeScale++;
+                    gp.music.checkVolume();
+                    gp.playSE(8);
+                }
+                if (gp.ui.commandNum == 2 && gp.se.volumeScale < 5) {
+                    gp.se.volumeScale++;
+                    gp.playSE(8);
+                }
+            }
         }
     }
 
